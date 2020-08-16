@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIPELICULA.DTOS
 {
-    public class GeneroCreacionDTO
+    public class GeneroCreacionDto
     {
         [Required]
         [MaxLength(40)]

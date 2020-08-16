@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APIPELICULA.Migrations
 {
-    public partial class actores : Migration
+    public partial class Actores : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

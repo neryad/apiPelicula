@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIPELICULA.DTOS
 {
-    public class GeneroDTO
+    public class GeneroDto
     {
         public int Id { get; set; }
         [Required]

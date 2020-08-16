@@ -21,15 +21,15 @@ namespace APIPELICULA.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<List<GeneroDTO>>> Get()
+        public async Task<ActionResult<List<GeneroDto>>> Get()
         {
             var entidades =  await _context.Generos.ToListAsync();
-            var dtos = _mapper.Map<List<GeneroDTO>>(entidades);
+            var dtos = _mapper.Map<List<GeneroDto>>(entidades);
             return dtos;
         }
 
         [HttpGet("{id:int}", Name = "obtenerGenero")]
-        public async Task<ActionResult<GeneroDTO>> Get(int id)
+        public async Task<ActionResult<GeneroDto>> Get(int id)
         {
             var entidad = await _context.Generos.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -38,23 +38,23 @@ namespace APIPELICULA.Controllers
                 return NotFound();
             }
 
-            var dto = _mapper.Map<GeneroDTO>(entidad);
+            var dto = _mapper.Map<GeneroDto>(entidad);
             return dto;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] GeneroCreacionDTO generoCreacionDto)
+        public async Task<ActionResult> Post([FromBody] GeneroCreacionDto generoCreacionDto)
         {
             var entidad = _mapper.Map<Genero>(generoCreacionDto);
             _context.Add(entidad);
             await _context.SaveChangesAsync();
-            var generoDTO = _mapper.Map<GeneroDTO>(entidad);
-            return  new CreatedAtRouteResult("obtenerGenero", new {id = generoDTO.Id}, generoDTO);
+            var generoDto = _mapper.Map<GeneroDto>(entidad);
+            return  new CreatedAtRouteResult("obtenerGenero", new {id = generoDto.Id}, generoDto);
         }
 
         [HttpPut("{id}")]
 
-        public async Task<ActionResult> Put(int id, [FromBody] GeneroCreacionDTO generoCreacionDto)
+        public async Task<ActionResult> Put(int id, [FromBody] GeneroCreacionDto generoCreacionDto)
         {
             var entidad = _mapper.Map<Genero>(generoCreacionDto);
             entidad.Id = id;
@@ -74,7 +74,7 @@ namespace APIPELICULA.Controllers
             }
 
             _context.Remove(new Genero() {Id = id});
-
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using APIPELICULA.DTOS;
+using APIPELICULA.Entidades;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,15 +22,15 @@ namespace APIPELICULA.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ActorDTO>>> Get()
+        public async Task<ActionResult<List<ActorDto>>> Get()
         {
             var entidades = await _context.Actores.ToListAsync();
-            return _mapper.Map<List<ActorDTO>>(entidades);
+            return _mapper.Map<List<ActorDto>>(entidades);
             
         }
 
         [HttpGet("{id}", Name = "obtenerActor")]
-        public async Task<ActionResult<ActorDTO>> Get(int id)
+        public async Task<ActionResult<ActorDto>> Get(int id)
         {
             var entidad = await _context.Actores.FirstOrDefaultAsync(x => x.Id == id);
             if (entidad == null)
@@ -37,7 +38,42 @@ namespace APIPELICULA.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<ActorDTO>(entidad);
+            return _mapper.Map<ActorDto>(entidad);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] ActorCreacionDto actorCreacionDto)
+        {
+            var entidad = _mapper.Map<Actor>(actorCreacionDto);
+            _context.Add(entidad);
+            await _context.SaveChangesAsync();
+            var dto = _mapper.Map<ActorDto>(entidad);
+            return new CreatedAtRouteResult("obtenerActor", new {id = entidad.Id}, dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] ActorCreacionDto actorCreacionDto)
+        {
+            var entidad = _mapper.Map<Actor>(actorCreacionDto);
+            entidad.Id = id;
+            _context.Entry(entidad).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await _context.Actores.AnyAsync(c => c.Id == id);
+            if (!existe)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(new Actor() {Id = id});
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

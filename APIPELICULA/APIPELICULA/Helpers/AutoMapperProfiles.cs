@@ -8,10 +8,11 @@ namespace APIPELICULA.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Genero, GeneroDTO>().ReverseMap();
-            CreateMap<GeneroCreacionDTO,Genero>();
+            CreateMap<Genero, GeneroDto>().ReverseMap();
+            CreateMap<GeneroCreacionDto,Genero>();
 
-            CreateMap<Actor, ActorDTO>().ReverseMap();
+            CreateMap<Actor, ActorDto>().ReverseMap();
+            CreateMap<ActorCreacionDto, Actor>();
         }
     }
 }

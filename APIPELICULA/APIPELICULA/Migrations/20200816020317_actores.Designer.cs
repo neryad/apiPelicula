@@ -11,7 +11,7 @@ namespace APIPELICULA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200816020317_actores")]
-    partial class actores
+    partial class Actores
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

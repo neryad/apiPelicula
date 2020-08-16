@@ -10,7 +10,7 @@ namespace APIPELICULA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200815232947_intial")]
-    partial class intial
+    partial class Intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
