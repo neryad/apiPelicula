@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using APIPELICULA.Validaciones;
 using Microsoft.AspNetCore.Http;
 
 namespace APIPELICULA.DTOS

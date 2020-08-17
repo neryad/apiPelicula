@@ -12,7 +12,9 @@ namespace APIPELICULA.Helpers
             CreateMap<GeneroCreacionDto,Genero>();
 
             CreateMap<Actor, ActorDto>().ReverseMap();
-            CreateMap<ActorCreacionDto, Actor>();
+            CreateMap<ActorCreacionDto, Actor>()
+                .ForMember(c => c.Foto, 
+                    options => options.Ignore());
         }
     }
 }

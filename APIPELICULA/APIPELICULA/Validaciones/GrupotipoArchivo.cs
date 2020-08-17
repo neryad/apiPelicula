@@ -1,4 +1,4 @@
-namespace APIPELICULA
+namespace APIPELICULA.Validaciones
 {
     public enum GrupotipoArchivo
     {

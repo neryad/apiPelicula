@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using APIPELICULA.Validaciones;
 using Microsoft.AspNetCore.Http;
 
 namespace APIPELICULA

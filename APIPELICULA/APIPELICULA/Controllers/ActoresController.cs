@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using APIPELICULA.DTOS;
 using APIPELICULA.Entidades;
+using APIPELICULA.Servicios;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +16,15 @@ namespace APIPELICULA.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAlmacenadorArchivo _almacenadorArchivo;
+        private readonly string contenedor = "actore";
 
-        public ActoresController(ApplicationDbContext context, IMapper mapper)
+
+        public ActoresController(ApplicationDbContext context, IMapper mapper, IAlmacenadorArchivo almacenadorArchivo )
         {
             _context = context;
             _mapper = mapper;
+            _almacenadorArchivo = almacenadorArchivo;
         }
 
         [HttpGet]
@@ -45,8 +51,19 @@ namespace APIPELICULA.Controllers
         public async Task<ActionResult> Post([FromForm] ActorCreacionDto actorCreacionDto)
         {
             var entidad = _mapper.Map<Actor>(actorCreacionDto);
+            if (actorCreacionDto.Foto != null)
+            {
+                using (var memoryStrema = new MemoryStream())
+                {
+                    await actorCreacionDto.Foto.CopyToAsync(memoryStrema);
+                    var contenido = memoryStrema.ToArray();
+                    var extesion = Path.GetExtension(actorCreacionDto.Foto.FileName);
+                    entidad.Foto = await _almacenadorArchivo.GuardarArchivo(contenido, extesion, contenedor,
+                        actorCreacionDto.Foto.ContentType);
+                }
+            }
             _context.Add(entidad);
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             var dto = _mapper.Map<ActorDto>(entidad);
             return new CreatedAtRouteResult("obtenerActor", new {id = entidad.Id}, dto);
         }
@@ -54,9 +71,26 @@ namespace APIPELICULA.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromForm] ActorCreacionDto actorCreacionDto)
         {
-            var entidad = _mapper.Map<Actor>(actorCreacionDto);
-            entidad.Id = id;
-            _context.Entry(entidad).State = EntityState.Modified;
+            var actoDb = await _context.Actores.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actoDb == null)
+            {
+                return NotFound();
+                
+            }
+
+            actoDb = _mapper.Map(actorCreacionDto, actoDb);
+            if (actorCreacionDto.Foto != null)
+            {
+                using (var memoryStrema = new MemoryStream())
+                {
+                    await actorCreacionDto.Foto.CopyToAsync(memoryStrema);
+                    var contenido = memoryStrema.ToArray();
+                    var extesion = Path.GetExtension(actorCreacionDto.Foto.FileName);
+                    actoDb.Foto = await _almacenadorArchivo.EditarArchivo(contenido, extesion, contenedor,
+                        actoDb.Foto,actorCreacionDto.Foto.ContentType);
+                }
+            }
             await _context.SaveChangesAsync();
             return NoContent();
         }
