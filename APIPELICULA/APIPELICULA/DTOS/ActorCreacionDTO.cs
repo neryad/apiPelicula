@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace APIPELICULA.DTOS
 {
@@ -9,5 +10,8 @@ namespace APIPELICULA.DTOS
         [StringLength(120)]
         public string Nombre { get; set; }
         public  DateTime FechaNacimiento { get; set; }
+        [PesoArchivoValidacion(4)]
+        [TipoArchivoValidacion(grupotipoArchivo: GrupotipoArchivo.Imagen )]
+        public IFormFile Foto { get; set; }
     }
 }
