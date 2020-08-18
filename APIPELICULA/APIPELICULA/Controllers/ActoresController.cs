@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using APIPELICULA.DTOS;
 using APIPELICULA.Entidades;
+using APIPELICULA.Helpers;
 using APIPELICULA.Servicios;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
@@ -29,9 +30,11 @@ namespace APIPELICULA.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ActorDto>>> Get()
+        public async Task<ActionResult<List<ActorDto>>> Get([FromQuery] PagonacionDto pagonacionDto)
         {
-            var entidades = await _context.Actores.ToListAsync();
+            var queryble = _context.Actores.AsQueryable();
+            await HttpContext.InsertarParametrosPaginacion(queryble, pagonacionDto.CantidadRegistrosPorPagina);
+            var entidades = await queryble.Paginar(pagonacionDto).ToListAsync();
             return _mapper.Map<List<ActorDto>>(entidades);
             
         }
