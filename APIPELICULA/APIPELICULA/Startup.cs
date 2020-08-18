@@ -23,7 +23,9 @@ namespace APIPELICULA
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-            services.AddTransient<IAlmacenadorArchivo, AlcenadorArchivoAzure>();
+            //services.AddTransient<IAlmacenadorArchivo, AlcenadorArchivoAzure>();
+            services.AddTransient<IAlmacenadorArchivo, AlmacenadorArchivoLocal>();
+            services.AddHttpContextAccessor();
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
@@ -39,7 +41,7 @@ namespace APIPELICULA
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
