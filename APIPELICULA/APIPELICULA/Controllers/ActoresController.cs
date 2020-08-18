@@ -97,7 +97,7 @@ namespace APIPELICULA.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<ActorPacthDTO> patchDocument)
+        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<ActorPacthDto> patchDocument)
         {
             if (patchDocument == null)
             {
@@ -111,7 +111,7 @@ namespace APIPELICULA.Controllers
                 return NotFound();
             }
 
-            var entidadDto = _mapper.Map<ActorPacthDTO>(entidadDb);
+            var entidadDto = _mapper.Map<ActorPacthDto>(entidadDb);
             patchDocument.ApplyTo(entidadDto,ModelState);
 
             var esValido = TryValidateModel(entidadDto);

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIPELICULA.DTOS
 {
-    public class ActorPacthDTO
+    public class ActorPacthDto
     {
         [Required]
         [StringLength(120)]
