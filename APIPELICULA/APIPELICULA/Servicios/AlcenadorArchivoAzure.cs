@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
@@ -10,10 +9,10 @@ namespace APIPELICULA.Servicios
 {
     public class AlcenadorArchivoAzure : IAlmacenadorArchivo
     {
-        private readonly string connectionString;
+        private readonly string _connectionString;
         public AlcenadorArchivoAzure(IConfiguration configuration)
         {
-            connectionString = configuration.GetConnectionString("AzureStorage");
+            _connectionString = configuration.GetConnectionString("AzureStorage");
         }
         public async Task<string> EditarArchivo(byte[] contenido, string extension, string contenedor, string ruta, 
             string contentType)
@@ -27,7 +26,7 @@ namespace APIPELICULA.Servicios
         {
             if (ruta != null)
             {
-                var cuenta = CloudStorageAccount.Parse(connectionString);
+                var cuenta = CloudStorageAccount.Parse(_connectionString);
                 var cliente = cuenta.CreateCloudBlobClient();
                 var contenedorRef = cliente.GetContainerReference(contenedor);
 
@@ -41,7 +40,7 @@ namespace APIPELICULA.Servicios
         public async  Task<string> GuardarArchivo(byte[] contenido, string extension, string contenedor, 
             string contentType)
         {
-            var cuenta = CloudStorageAccount.Parse(connectionString);
+            var cuenta = CloudStorageAccount.Parse(_connectionString);
             var cliente = cuenta.CreateCloudBlobClient();
             var contenedorRef = cliente.GetContainerReference(contenedor);
 
