@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIPELICULA.Entidades
@@ -8,5 +9,6 @@ namespace APIPELICULA.Entidades
         [Required]
         [MaxLength(40)]
         public string Nombre { get; set; }
+        public List<PeliclasGeneros> PeliclasGeneroses { get; set; }
     }
 }

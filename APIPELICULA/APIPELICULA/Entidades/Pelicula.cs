@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace APIPELICULA.Entidades
@@ -12,5 +13,7 @@ namespace APIPELICULA.Entidades
         public bool EnCines { get; set; }
         public DateTime FechaEstreno { get; set; }
         public string Poster { get; set; }
+        public List<PeliculasActores> PeliculasActoreses { get; set; }
+        public List<PeliclasGeneros> PeliclasGeneroses { get; set; }
     }
 }

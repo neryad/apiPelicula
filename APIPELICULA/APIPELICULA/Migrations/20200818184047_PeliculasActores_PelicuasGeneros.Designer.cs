@@ -4,14 +4,16 @@ using APIPELICULA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APIPELICULA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200818184047_PeliculasActores_PelicuasGeneros")]
+    partial class PeliculasActores_PelicuasGeneros
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,16 +107,19 @@ namespace APIPELICULA.Migrations
                     b.Property<int>("ActorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PeliculaId")
+                    b.Property<int>("PelicuaId")
                         .HasColumnType("int");
 
                     b.Property<int>("Orden")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PeliculaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Personaje")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ActorId", "PeliculaId");
+                    b.HasKey("ActorId", "PelicuaId");
 
                     b.HasIndex("PeliculaId");
 
@@ -124,13 +129,13 @@ namespace APIPELICULA.Migrations
             modelBuilder.Entity("APIPELICULA.Entidades.PeliclasGeneros", b =>
                 {
                     b.HasOne("APIPELICULA.Entidades.Genero", "Genero")
-                        .WithMany("PeliclasGeneroses")
+                        .WithMany()
                         .HasForeignKey("GeneroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("APIPELICULA.Entidades.Pelicula", "Pelicula")
-                        .WithMany("PeliclasGeneroses")
+                        .WithMany()
                         .HasForeignKey("peliculaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -139,16 +144,14 @@ namespace APIPELICULA.Migrations
             modelBuilder.Entity("APIPELICULA.Entidades.PeliculasActores", b =>
                 {
                     b.HasOne("APIPELICULA.Entidades.Actor", "Actor")
-                        .WithMany("PeliculasActoreses")
+                        .WithMany()
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("APIPELICULA.Entidades.Pelicula", "Pelicula")
-                        .WithMany("PeliculasActoreses")
-                        .HasForeignKey("PeliculaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("PeliculaId");
                 });
 #pragma warning restore 612, 618
         }
