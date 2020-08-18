@@ -15,6 +15,7 @@ namespace APIPELICULA.Helpers
             CreateMap<ActorCreacionDto, Actor>()
                 .ForMember(c => c.Foto, 
                     options => options.Ignore());
+            CreateMap<ActorPacthDTO, Actor>().ReverseMap();
         }
     }
 }

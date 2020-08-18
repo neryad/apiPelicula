@@ -5,6 +5,7 @@ using APIPELICULA.DTOS;
 using APIPELICULA.Entidades;
 using APIPELICULA.Servicios;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,7 +95,37 @@ namespace APIPELICULA.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
-        
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<ActorPacthDTO> patchDocument)
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var entidadDb = await _context.Actores.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (entidadDb == null)
+            {
+                return NotFound();
+            }
+
+            var entidadDto = _mapper.Map<ActorPacthDTO>(entidadDb);
+            patchDocument.ApplyTo(entidadDto,ModelState);
+
+            var esValido = TryValidateModel(entidadDto);
+
+            if (!esValido)
+            {
+                return BadRequest();
+            }
+
+            _mapper.Map(entidadDto, entidadDb);
+            await _context.SaveChangesAsync();
+            return NoContent();
+
+        }
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

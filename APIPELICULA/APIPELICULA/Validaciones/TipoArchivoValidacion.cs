@@ -38,7 +38,8 @@ namespace APIPELICULA.Validaciones
 
             if (!_tiposValidos.Contains(formFile.ContentType))
             {
-                return new ValidationResult($"El tipo de archivo de ser: {string.Join(", ", _tiposValidos)}");
+                return new ValidationResult(
+                    $"El tipo de archivo de ser: {string.Join(", ", _tiposValidos)}");
             }
             
             return ValidationResult.Success;
