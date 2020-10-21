@@ -104,7 +104,9 @@ namespace APIPELICULA.Controllers
             {
                 return NotFound();
             }
-            return _mapper.Map<PeliculaDto>(pelicuas);
+
+            pelicuas.PeliculasActoreses = pelicuas.PeliculasActoreses.OrderBy(x => x.Orden).ToList();
+            return _mapper.Map<PeliculaDetallesDTO>(pelicuas);
         }
 
         [HttpPost]
