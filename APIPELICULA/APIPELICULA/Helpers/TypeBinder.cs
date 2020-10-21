@@ -25,7 +25,7 @@ namespace APIPELICULA.Helpers
                 bindingContext.Result = ModelBindingResult.Success(desializado);
                 
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 bindingContext.ModelState.TryAddModelError(nombrePropiedad, "Valor invalido para lista <int>");
             }

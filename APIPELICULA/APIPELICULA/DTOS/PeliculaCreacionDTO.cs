@@ -14,7 +14,7 @@ namespace APIPELICULA.DTOS
         public IFormFile Poster { get; set; }
         [ModelBinder(typeof(TypeBinder<List<int>>))]
         public  List<int>GenerosIDs { get; set; }
-        [ModelBinder(typeof(TypeBinder<List<ActorPeliculasCreacionDTO>>))]
-        public  List<ActorPeliculasCreacionDTO>Actores { get; set; }
+        [ModelBinder(typeof(TypeBinder<List<ActorPeliculasCreacionDto>>))]
+        public  List<ActorPeliculasCreacionDto>Actores { get; set; }
     }
 }
